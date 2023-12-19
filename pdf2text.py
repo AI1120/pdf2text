@@ -14,9 +14,8 @@ from PyPDF2 import PdfReader, PdfWriter
 def check_rotation(file):
     reader = PdfReader(file)
     writer = PdfWriter()
-    oriantation = reader.pages[0].get('/Rotate')
     
-    if oriantation == 90 :
+    if (oriantation := reader.pages[0].get('/Rotate')) == 90 :
         for page in reader.pages:
             # page.rotate_clockwise(270) # (before pypdf3.0 - deprecated - thanks to Maciejg for the update)
             page.rotate(270)
@@ -134,14 +133,13 @@ def get_driver_text(page, driver):
     else:
         page.set_cropbox(fitz.Rect(293, 150, 545, 224))
 
-    text = page.get_text().rstrip().strip().split("\n")
     # print(text, 'text')
 
     # if len(set(text[0])) == 1:
     #     print('if len')
     #     return ["Unknown", "Unknown"]
 
-    if text == [""]:
+    if (text := page.get_text().rstrip().strip().split("\n")) == [""]:
         # print('if drive')
         return ["Unknown", "Unknown"]
 
